@@ -1,22 +1,18 @@
+
+library(ggplot2)
 #Function to translate IR levels into survival 
-IR_Survival_Func = function(Kmax, z, n, z_50, sigma, nsim){ 
+
+ir_to_survival = function(Kmax, z, n, z_50, sigma, nsim){ 
   
-  f_z = rnorm(nsim, mean = z, sd = sigma) #Generate random distribution around mean IR level, of nsim replicates. 
-  
-  for(i in 1:nsim){ ##for loop can be added if situation arises where z values are less than z
-    if(f_z[i] < 0)
-    {f_z[i] = 0}
-  }
+  f_z = rnorm(nsim, mean = z, sd = sigma) #Generate random Normal distribution around mean IR level, of nsim replicates. 
+  f_z = ifelse(f_z < 0, 0, f_z) #Prevent Insecticide Resistance being less than zero
   
   Y = (Kmax * (f_z^n)) / (z_50 + (f_z ^ n))  #Calculate Survival (Equation 6)
-  for(i in 1:nsim){ ##for loop can be added if situation arises where surival values are less than 0
-    if(Y[i] < 0)
-    {Y[i] = 0}
-  }
+  Y = ifelse(Y < 0, 0, Y) #Prevent survival being less than zero.
   return(mean(Y))
-  #return(f_z)
-}
+  }
+
 
 ##Checking code
-IR_Survival_Func(1, 100, 1, 100, 5, 1000)  #Currently only giving ~0.5 when n = 1
+ir_to_survival(Kmax = 1, z = 500, n=1, z_50 = 100, sigma = 5, nsim = 1000)  #Currently only giving ~0.5 when n = 1
 
