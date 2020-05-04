@@ -20,7 +20,21 @@ ir_to_survival(Kmax = 1, z = 100, n=1, z_50 = 900, sigma = 0, nsim = 1)
 
 ##Next task: Create a graph of ir_to_survival outputs:
 
-plot_ir_survival = function(ir.values, Y.values){
-ggplot(some_data, aes(x=ir.values, y = Y.values)) +
-  geom_point()
-}
+library(ggplot2)
+library(dplyr)
+##create intial dataframe
+
+sd.values()
+
+df= data.frame(ir.values = seq(0, 10000, by = 1))%>%
+  rowwise%>%
+  mutate(Y.values = ir_to_survival(Kmax= 1, z = ir.values, n=1, z_50=900, sigma = 25, nsim=1))
+
+
+
+ggplot(df, aes(x=ir.values, y = Y.values)) +
+  geom_point(colour = "red") +
+  xlab("Insecticide Resistance Intensity (z)") +
+  ylab("Survival in CDC Bottle Bioassay")
+  
+

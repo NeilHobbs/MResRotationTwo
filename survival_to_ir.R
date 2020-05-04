@@ -5,8 +5,7 @@ survival_to_ir = function(Kmax, n, z_50, req_surv, precision, sigma, nsim, min_v
       {return(test_value)} #When precision level reached return test_value(IR (z))
     else(
       if(ir_to_survival(Kmax = Kmax, z=test_value, n=n, z_50=z_50, sigma = sigma, nsim = nsim) < req_surv)
-      {#can put sigma and nsim in function parameters?
-      #but better to put sigma = 0, nsim=1 to prevent any  issues  in the function.Not liking NA or being ignored!
+      {
         min_value = test_value} 
       else(max_value = test_value))
    }

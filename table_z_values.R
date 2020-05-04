@@ -3,54 +3,27 @@
 #Current Method is nested for loop:
 #Create vectors of SD and Survivals values
 
+##Packages required
 library(dplyr)
 library(tidyr)
+library(knitr)
 
-
-set_sd_values = function(){} ##function to allow the input of own required sd range
-set_surv_values = function(){} ##function to allow the input of own required survival range
-
-
-table_z_values = function(){} #inputs: z_50; surv_vals;sd_vals, potentially max_vale
-
+#create intial vectors of SD(sigma) and survival; this method looks clunky and easy to make mistakes
 sd.values = rep(c(0.1, 0.5, 1, 5, 20, 25), times = 5)
 surv.values = c(rep(0.05, 6), rep(0.1, 6), rep(0.2, 6), rep(0.5, 6), rep(0.8, 6))
 
-##Need to turn into a function, whereby unique 
-
+##Need to turn into a function, whereby unique sd and survival values can be input
+table_z_values = function(z_50, Kmax, n, surv.values, sd.values, precision, nsim, min_value, max_value){
 df = data.frame(surv.values, sd.values)%>%
   rowwise()%>%
-  mutate(z.values = survival_to_ir(Kmax=1, n=1, z_50 = 900, req_surv = surv.values, precision = 0.01, sigma = sd.values, nsim = 1000,
-                                   min_value = 0, max_value = 5000))%>%
+  mutate(z.values = survival_to_ir(Kmax=Kmax, n=n, z_50 = z_50, req_surv = surv.values, precision = precision, sigma = sd.values, nsim = nsim,
+                                   min_value = min_value, max_value = max_value))%>%
     spread(key = surv.values, value = z.values)
-
-##Would be useful to return a tidy dataframe before the spread is done.
-
-
-
-
-
-library(curl)
-
-install.packages("kableExtra", dependencies = TRUE)
-
-library(knitr)
-
-
-#Orignal method: using nested loop, with original default parameters
-for(i in 1:length(surv.values)){
-  for(j in 1:length(sd.values)){
-    print(survival_to_ir(Kmax=1, n=1, z_50 = 100, req_surv = surv.values[i], precision = 0.01, sigma = sd.values[j], nsim = 1000,
-                         min_value = 0, max_value = 5000))
-  }
+return(kable(df))
 }
 
-##but this method only prints the z values. Need to be able to save so as to make into a table.
 
-
-##consider starting with a matrix?
-
-apply(survival_to_ir(Kmax=1, n=1, z_50 = 100, req_surv = surv.values, precision = 0.01, sigma = sd.values, nsim = 1000,
-                             min_value = 0, max_value = 5000))
+table_z_values(z_50=900, Kmax=1, n=1, surv.values=surv.values, sd.values = sd.values, 
+                  precision = 0.01, nsim=1000, min_value = 0, max_value = 5000)
 
 
