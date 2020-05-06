@@ -23,7 +23,7 @@ survival_to_ir(Kmax=1, n=1, z_50 = 100, req_surv = 0.1, precision = 0.01, sigma 
 
 #Create vectors of SD and Survivals values
 sd.values = c(0.1, 0.5, 1, 5, 20, 25)
-surv.values = c(0.05, 0.1, 0.2, 0.5, 0.8)
+surv.values = c(0.02, 0.05, 0.1, 0.2, 0.5, 0.8) #Inputing 2% mortality as this would be the indicative mortality to suggest some IR
 
 #with original default parameters
 for(i in 1:length(surv.values)){

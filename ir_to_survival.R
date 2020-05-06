@@ -1,4 +1,11 @@
-#Function to translate IR levels into survival 
+#Function to translate IR levels(z) into survival 
+#Kmax = the maximum proportion surviving (must be set at 1)
+#z = the insecticide resistance intensity level
+#n=slope of the curve (tangent to the curve at z_50)
+#z_50 = the insecticide resistance intensity level that has 50% survival
+#sigma = standard devation of the normal distribution
+#nsim = the number of simulations for the rnorm function
+
 ir_to_survival = function(Kmax, z, n, z_50, sigma, nsim){ 
   
   f_z = rnorm(nsim, mean = z, sd = sigma) #Generate random Normal distribution around mean IR level, of nsim replicates. 
@@ -24,7 +31,6 @@ library(ggplot2)
 library(dplyr)
 ##create intial dataframe
 
-sd.values()
 
 df= data.frame(ir.values = seq(0, 10000, by = 1))%>%
   rowwise%>%

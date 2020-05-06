@@ -1,4 +1,10 @@
 ##Plot survival_to_ir function
+#This function plots the survival_to_ir function 
+#minY = the minimal survival
+##maxY = the maximum survival
+##divisions = the resolution to which the graph can plot
+
+
 library(ggplot2)
 library(dplyr)
 
